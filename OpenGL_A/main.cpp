@@ -1,16 +1,27 @@
 #include <glfw3.h>
+#include <iostream>
+
+static void error_callback(int error, const char *description)
+{
+	std::cout << description << std::endl;
+	system("pause");
+}
 
 int main(void)
 {
 	GLFWwindow* window;
+	glfwSetErrorCallback(error_callback);
 
-	/* Initialize the library */
 	if (!glfwInit())
-		return -1;
+		exit(EXIT_FAILURE);
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(480, 320, "Hello World", NULL, NULL);
-	if (!window)
+	window = glfwCreateWindow(800, 600, "Hello World", NULL, NULL);
+	if (window == NULL)
 	{
 		glfwTerminate();
 		return -1;
