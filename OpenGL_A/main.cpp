@@ -1,11 +1,9 @@
 #include <glfw3.h>
 #include <iostream>
 
-static void error_callback(int error, const char *description)
-{
-	std::cout << description << std::endl;
-	system("pause");
-}
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void error_callback(int error, const char *description);
+void processInput(GLFWwindow *window);
 
 int main(void)
 {
@@ -29,23 +27,16 @@ int main(void)
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Draw a triangle */
-		glBegin(GL_TRIANGLES);
+		//input
+		processInput(window);
 
-		glColor3f(1.0, 0.0, 0.0);    // Red
-		glVertex3f(0.0, 1.0, 0.0);
-
-		glColor3f(0.0, 1.0, 0.0);    // Green
-		glVertex3f(-1.0, -1.0, 0.0);
-
-		glColor3f(0.0, 0.0, 1.0);    // Blue
-		glVertex3f(1.0, -1.0, 0.0);
-
-		glEnd();
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -56,4 +47,23 @@ int main(void)
 
 	glfwTerminate();
 	return 0;
+}
+
+void error_callback(int error, const char *description)
+{
+	std::cout << description << std::endl;
+	system("pause");
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
 }
